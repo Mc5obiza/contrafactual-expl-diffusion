@@ -65,9 +65,9 @@ class ResBlockDown(nn.Module):
         self.avgpool = nn.AvgPool2d(2)
 
     def forward(self, x):
-        h = F.leaky_relu(x, 0.2)
+        h = F.relu(x)
         h = self.conv1(h)
-        h = F.leaky_relu(h, 0.2)
+        h = F.relu(h)
         h = self.conv2(h)
         if self.downsample:
             h = self.avgpool(h)
@@ -81,7 +81,7 @@ class ResBlockDown(nn.Module):
 
 
 class Generator(nn.Module):
-    def __init__(self, in_dim=100, num_class=10) -> None:
+    def __init__(self, in_dim=100, num_class=10):
         super().__init__()
         self.input = nn.ConvTranspose2d(in_dim, 1024, kernel_size=4, stride=1, padding=0)
         self.cbn0 = ConditionalBatchNorm2d(1024, num_class)
@@ -106,25 +106,21 @@ class Generator(nn.Module):
 
 
 class Discriminator(nn.Module):
-    def __init__(self, num_class, kernel_size=4, stride=2):
+    def __init__(self, num_class = 2):
         super().__init__()
         self.block1 = ResBlockDown(3, 64, downsample=True)
         self.block2 = ResBlockDown(64, 128, downsample=True)
         self.block3 = ResBlockDown(128, 256, downsample=True)
         self.block4 = ResBlockDown(256, 512, downsample=True)
-        self.block5 = ResBlockDown(512, 1024, downsample=True)
-        self.block6 = ResBlockDown(1024, 1024, downsample=False)
-        self.linear = nn.Linear(1024, 1)
-        self.embed = nn.Embedding(num_class, 1024)
+        self.linear = nn.Linear(512, 1)
+        self.embed = nn.Embedding(num_class, 512)
 
     def forward(self, x, labels):
         h = self.block1(x)
         h = self.block2(h)
         h = self.block3(h)
         h = self.block4(h)
-        h = self.block5(h)
-        h = self.block6(h)
-        h = F.leaky_relu(h, 0.2)
+        h = F.relu(h)
         h = h.sum(dim=(2, 3))
         out = self.linear(h).view(-1)
         proj = (self.embed(labels) * h).sum(dim=1)
