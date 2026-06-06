@@ -152,9 +152,7 @@ def disc_loss(real_images,labels,gen:Generator,disc:Discriminator,encoder:Encode
     output_real = disc(real_images,labels)
     loss =- (torch.mean(output_real)-torch.mean(output_fake)) + LAMBDA_GRADIENT*calculate_gradient(disc,fake_image,real_images,labels)
     return loss
-def gen_loss(images, source_labels, target_labels, target_cls,
-             gen, disc, classifier, encoder,
-             lambda_cgan=1, lambda_recon=10, lambda_cls=1):
+def gen_loss(images, source_labels, target_labels, target_cls,gen:Generator,disc:Discriminator,classifier:Classifier,encoder:Encoder,lambda_cgan=1, lambda_recon=10, lambda_cls=1):
 
     z = encoder(images)
 
