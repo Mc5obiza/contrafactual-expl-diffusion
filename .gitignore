@@ -1,3 +1,4 @@
 .vscode/
 2101.04230v3.pdf
 models/__pycache__/
+train.ipynb
