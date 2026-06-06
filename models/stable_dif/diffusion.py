@@ -75,10 +75,10 @@ class UNET_ResidualBlock(nn.Module):
         # (Batch_Size, Out_Channels, Height, Width) + (Batch_Size, Out_Channels, Height, Width) -> (Batch_Size, Out_Channels, Height, Width)
         return merged + self.residual_layer(residue)
 
-class UNET_AttentionBlock(nn.Module):
+class UNET_AttentionBlock(nn.Module): 
     def __init__(self, n_head: int, n_embd: int, d_context=768):
         super().__init__()
-        channels = n_head * n_embd
+        channels = n_head * n_embd  
         
         self.groupnorm = nn.GroupNorm(32, channels, eps=1e-6)
         self.conv_input = nn.Conv2d(channels, channels, kernel_size=1, padding=0)

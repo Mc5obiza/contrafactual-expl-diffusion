@@ -99,7 +99,7 @@ class DDPMSampler:
         timesteps: torch.IntTensor,
     ) -> torch.FloatTensor:
         alphas_cumprod = self.alphas_cumprod.to(device=original_samples.device, dtype=original_samples.dtype)
-        timesteps = timesteps.to(original_samples.device)
+        timesteps = timesteps.to(original_samples.device) # type: ignore
 
         sqrt_alpha_prod = alphas_cumprod[timesteps] ** 0.5
         sqrt_alpha_prod = sqrt_alpha_prod.flatten()
@@ -116,7 +116,7 @@ class DDPMSampler:
         # here mu = sqrt_alpha_prod * original_samples and sigma = sqrt_one_minus_alpha_prod
         noise = torch.randn(original_samples.shape, generator=self.generator, device=original_samples.device, dtype=original_samples.dtype)
         noisy_samples = sqrt_alpha_prod * original_samples + sqrt_one_minus_alpha_prod * noise
-        return noisy_samples
+        return noisy_samples #type: ignore
 
         
 

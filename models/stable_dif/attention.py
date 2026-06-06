@@ -118,5 +118,5 @@ class CrossAttention(nn.Module):
         # (Batch_Size, Seq_Len_Q, Dim_Q) -> (Batch_Size, Seq_Len_Q, Dim_Q)
         output = self.out_proj(output)
 
-        # (Batch_Size, Seq_Len_Q, Dim_Q)
+        #  (Batch_Size, Seq_Len_Q, Dim_Q)
         return output
