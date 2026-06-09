@@ -1,8 +1,8 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from models.encoder import Encoder
-from models.classifier import Classifier
+from from_scratch.models.encoder import Encoder
+from from_scratch.models.classifier import Classifier
 
 
 def weights_init(m):
